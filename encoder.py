@@ -19,6 +19,8 @@ RED = '\033[31m'
 GREEN = '\033[32m'
 YELLOW = '\033[33m'
 BLUE = '\033[34m'
+MAGENTA = '\033[35m'
+CYAN = '\033[36m'
 RESET = '\033[0m'
 
 SOPORTADAS = ["add", "sub", "and", "or", "addi", "andi",
@@ -39,7 +41,23 @@ SEGMENT_LENGTHS = {
     'imm[10:5]': 6,
     'imm[6:0]': 7,
     'imm[4:1]': 4,
+}
 
+SEGMENT_COLORS = {
+    'rs1': RED,
+    'rs2': GREEN,
+    'rd': BLUE,
+    'funct3': YELLOW,
+    'funct7': MAGENTA,
+    'imm': CYAN,
+    'opcode': RESET,
+    'imm[12]': CYAN,
+    'imm[11]': CYAN,
+    'imm[11:7]': CYAN,
+    'imm[11:5]': CYAN,
+    'imm[10:5]': CYAN,
+    'imm[6:0]': CYAN,
+    'imm[4:1]': CYAN,
 }
 
 INSTRUCTION_ORDER = {
@@ -197,17 +215,27 @@ def explain_instruction(instruction: str, word: int) -> str:
     El formato visual (colores, tabla, arte ASCII, etc.) queda a su
     criterio, siempre que sea claro.
     """
-    print(f"Palabra codificada en binario: {word:032b}")
+    
 
     split_instruction = instruction.split()      
     mnemonic = split_instruction[0]
     format_type = INSTRUCTION_FORMATS[mnemonic]
-    print(f"Formato: Tipo-{format_type}")
+    
+    order = INSTRUCTION_ORDER[format_type]
+
+    print(f"Formato: Tipo-{format_type} ({', '.join(order)})")
 
     result = ""
-    for field in INSTRUCTION_ORDER[format_type]:
-        result += format(0, '0' + str(SEGMENT_LENGTHS[field]) + 'b') + ' '
+    number_string = bin(word)[2:].zfill(32)
+    accumulated_length = 0
+    for field in order:
+        field_length = SEGMENT_LENGTHS[field]
+        field_value = number_string[accumulated_length:accumulated_length + field_length]
+        result += SEGMENT_COLORS[field] + (f"{field} ({31 - accumulated_length}:{31 - accumulated_length - field_length + 1}): 0b{field_value} = {int(field_value, 2)}\n") + RESET
+        accumulated_length += field_length
 
+
+    
     return result
 
 
@@ -223,6 +251,7 @@ def main():
 
     # No modificar el formato de la siguiente línea: la especificación la
     # requiere, literal, para permitir la validación automática.
+    print(f"Binario: {word:032b}")
     print(f"HEX: 0x{word:08x}")
 
 
