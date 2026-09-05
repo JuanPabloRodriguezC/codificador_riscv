@@ -60,6 +60,23 @@ SEGMENT_COLORS = {
     'imm[4:1]': CYAN,
 }
 
+SEGMENT_EXPLANATIONS = {
+    'rs1': 'Registro fuente 1',
+    'rs2': 'Registro fuente 2',
+    'rd': 'Registro destino',
+    'funct3': 'Campo de función 3 bits (propio de la instrucción)',
+    'funct7': 'Campo de función 7 bits (propio del formato R)',
+    'imm': 'Inmediato de 12 bits',
+    'opcode': 'Código de operación según el formato de instrucción',
+    'imm[12]': 'Bit más significativo del inmediato (signo)',
+    'imm[11]': 'Bit 11 del inmediato',
+    'imm[11:7]': 'Bits 11 a 7 del inmediato',
+    'imm[11:5]': 'Bits 11 a 5 del inmediato',
+    'imm[10:5]': 'Bits 10 a 5 del inmediato',
+    'imm[6:0]': 'Bits 6 a 0 del inmediato',
+    'imm[4:1]': 'Bits 4 a 1 del inmediato',
+}
+
 INSTRUCTION_ORDER = {
     'R': ['funct7', 'rs2', 'rs1', 'funct3', 'rd', 'opcode'],
     'I': ['imm', 'rs1', 'funct3', 'rd', 'opcode'],
@@ -204,8 +221,7 @@ def encode_instruction(instruction: str) -> int:
         result |= segment_value
         accumulated_length += SEGMENT_LENGTHS[segment]
     return result
-
-
+    
 def explain_instruction(instruction: str, word: int) -> str:
     """
     Debe retornar un texto (para imprimirse en pantalla) que muestre, de
@@ -228,14 +244,31 @@ def explain_instruction(instruction: str, word: int) -> str:
     result = ""
     number_string = bin(word)[2:].zfill(32)
     accumulated_length = 0
+    imm = ""
+    whole_word = ""
+
     for field in order:
         field_length = SEGMENT_LENGTHS[field]
+        
         field_value = number_string[accumulated_length:accumulated_length + field_length]
-        result += SEGMENT_COLORS[field] + (f"{field} ({31 - accumulated_length}:{31 - accumulated_length - field_length + 1}): 0b{field_value} = {int(field_value, 2)}\n") + RESET
+
+        # guarda el valor del inmediato completo
+        if "imm" in field:
+            imm += field_value
+
+        result += SEGMENT_COLORS[field] + (f"{field} ({31 - accumulated_length}:{31 - accumulated_length - field_length + 1}): 0b{field_value} = {int(field_value, 2)} => ") + SEGMENT_EXPLANATIONS[field] + RESET + "\n"
+        whole_word += SEGMENT_COLORS[field] + field_value + RESET
         accumulated_length += field_length
 
+    #reconstruccion de inmediato para formato B
+    if imm:
+        if format_type == "B":
+            result += f"Valor inmediato: {imm[0] + imm[11] + imm[1:7] + imm[7:12]}\n"
+        else:
+            result += f"Valor inmediato: {imm}\n"
 
-    
+    result += f"\nRepresentación completa de la instrucción: {whole_word}"
+
     return result
 
 
