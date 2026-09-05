@@ -1,31 +1,36 @@
-# Kit del proyecto
-
-- `encoder_skeleton.py`: esqueleto en Python con el contrato de entrada/salida
-  ya implementado. Complete `encode_instruction` y `explain_instruction`.
-  Su uso es opcional; puede implementar la herramienta en otro lenguaje o
-  desde cero, siempre que respete el mismo contrato (ver especificación).
-- `run.sh`: punto de entrada fijo y obligatorio (`./run.sh "<instruccion>"`).
-  Tal como se entrega, invoca `encoder_skeleton.py`. Si cambia de lenguaje o
-  de estructura, ajuste este archivo para que siga invocando su solución de
-  la misma forma.
-- `vectores_ejemplo.txt`: instrucciones de ejemplo junto con su codificación
-  correcta, para que pueda comprobar su herramienta desde el primer día.
-
-## Cómo usar `vectores_ejemplo.txt`
-
-El archivo tiene el formato `instruccion ; 0xHEX`, una por línea (las líneas
-que empiezan con `#` son comentarios). Por ejemplo:
+# Instalación de Toolchain
+Para instalar el ensamblador de RISC-V en distribuciones Ubuntu de Linux se debe correr en la terminal
 
 ```
-add x7, x20, x6 ; 0x006a03b3
+sudo apt update
+sudo apt install gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
 ```
 
-Esto significa: al ejecutar `./run.sh "add x7, x20, x6"`, la línea `HEX:`
-de su salida debe ser exactamente `HEX: 0x006a03b3`.
+Seguidamente se agrega la herramienta al $PATH:
 
-Puede comparar manualmente, o escribir un script propio corto que lea el
-archivo línea por línea, ejecute `./run.sh` con cada instrucción, y compare
-el resultado. Estos vectores son un conjunto de ejemplo para su propia
-comprobación; **no sustituyen** los al menos 3 casos de prueba por
-instrucción (36 en total) que la especificación pide construir y validar
-usted mismo contra el toolchain oficial (`objdump -d`).
+```
+export PATH="/opt/riscv/bin:$PATH"
+```
+
+
+# Compilar las instrucciones y obtener el resultado en hexadecimal
+## Con un archivo (ej: test.s)
+
+```
+riscv64-unknown-elf-as -march=rv32i -mabi=ilp32 -o test.o test.s
+riscv64-unknown-elf-objdump -d test.o
+```
+
+## Con una línea de instrucción
+```
+echo "addi x1, x0, 5" | riscv64-unknown-elf-as -march=rv32i -mabi=ilp32 -o /tmp/test.o -
+riscv64-unknown-elf-objdump -d /tmp/test.o
+```
+o en un solo comando:
+```
+echo "addi x1, x0, 5" | riscv64-unknown-elf-as -march=rv32i -mabi=ilp32 -o /tmp/test.o - && riscv64-unknown-elf-objdump -d /tmp/test.o
+```
+
+### Obtener el resultado en binario
+Si se quiere el resultado en binario en vez de hexadecimal, agregue la bandera `-b binary -m riscv:rv32` a `objdump`
+
