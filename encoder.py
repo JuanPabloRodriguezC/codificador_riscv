@@ -153,6 +153,9 @@ def encode_instruction(instruction: str) -> int:
     if mnemonic not in SOPORTADAS:
         raise ValueError(f"Instrucción no soportada: {mnemonic}")
 
+    if ";" in split_instruction[-1]:
+        split_instruction[-1] = split_instruction[-1].replace(";", "")
+
     instruction_format = INSTRUCTION_FORMATS[mnemonic]
     opcode = OPCODE_DICT[instruction_format]
     funct3 = FUNCT3_DICT[mnemonic]
@@ -195,6 +198,10 @@ def encode_instruction(instruction: str) -> int:
 
         case default:
             raise ValueError(f"Formato de instrucción desconocido: {instruction_format}")
+
+    if imm < 0:
+        imm = (1 << SEGMENT_LENGTHS['imm']) + imm
+    
 
     values_dict = {
         'rs1': rs1,
