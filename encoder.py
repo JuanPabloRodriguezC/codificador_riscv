@@ -13,7 +13,6 @@ propia herramienta desde cero, en el lenguaje que prefiera, siempre que
 respete el mismo contrato (ver especificación, sección "Modo de operación").
 """
 import sys
-from unittest import case
 
 RED = '\033[31m'
 GREEN = '\033[32m'
