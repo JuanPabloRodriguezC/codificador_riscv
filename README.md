@@ -65,7 +65,14 @@ add x5, x6, x7
 add x31, x30, x29
 add x0, x1, x2
 ```
+Salida de modelo: `HEX: 0x007302b3`
+Salida de `objdump`: `007302b3`
 
+Salida de modelo: `HEX: 0x01df0fb3`
+Salida de `objdump`: `01df0fb3`
+
+Salida de modelo: `HEX: 0x00208033`
+Salida de `objdump`: `00208033`
 
 
 ## sub
@@ -76,6 +83,15 @@ sub x31, x0, x1
 sub x0, x0, x0
 ```
 
+Salida de modelo: `HEX: HEX: 0x40c58533`
+Salida de `objdump`: `40c58533`
+
+Salida de modelo: `HEX: 0x40100fb3`
+Salida de `objdump`: `40100fb3`
+
+Salida de modelo: `HEX: 0x40000033`
+Salida de `objdump`: `40000033`
+
 ## and
 
 ```
@@ -84,6 +100,15 @@ and x31, x31, x31
 and x0, x5, x6          
 ```
 
+Salida de modelo: `HEX: 0x007372b3`
+Salida de `objdump`: `007372b3`
+
+Salida de modelo: `HEX: 0x01ffffb3`
+Salida de `objdump`: `01ffffb3`
+
+Salida de modelo: `HEX: 0x0062f033`
+Salida de `objdump`: `0062f033`
+
 ## or
 
 ```
@@ -91,6 +116,15 @@ or x8, x9, x10
 or x31, x1, x0
 or x0, x31, x31
 ```
+
+Salida de modelo: `HEX: 0x00a4e433`
+Salida de `objdump`: `00a4e433`
+
+Salida de modelo: `HEX: 0x01ffffb3`
+Salida de `objdump`: `01ffffb3`
+
+Salida de modelo: `HEX: 0x0000efb3`
+Salida de `objdump`: `0000efb3`
 
 ## addi
 
@@ -101,13 +135,34 @@ addi x9, x0, 2047
 addi x10, x0, -2048 
 ```
 
+Salida de modelo: `HEX: 0x06430293`
+Salida de `objdump`: `06430293`
+
+Salida de modelo: `HEX: 0xfff40393`
+Salida de `objdump`: `fff40393 `
+
+Salida de modelo: `HEX: 0x7ff00493`
+Salida de `objdump`: `7ff00493`
+
+Salida de modelo: `HEX: 0x80000513`
+Salida de `objdump`: `80000513`
+
 ## andi
 
 ```
-andi x5, x6, 0x0F
+andi x5, x6, 0
 andi x7, x8, -1
-andi x9, x0, 0x0F
+andi x9, x0, 0
 ```
+
+Salida de modelo: `HEX: 0x00037293`
+Salida de `objdump`: `00037293`
+
+Salida de modelo: `HEX: 0xfff47393`
+Salida de `objdump`: `fff47393`
+
+Salida de modelo: `HEX: 0x00007493`
+Salida de `objdump`: `00007493`
 
 ## lw
 
@@ -119,6 +174,21 @@ lw x11, 2047(x12)
 lw x13, -2048(x14)
 ```
 
+Salida de modelo: `HEX: 0x00832293`
+Salida de `objdump`: `00832283`
+
+Salida de modelo: `HEX: 0xff842393`
+Salida de `objdump`: `ff842383`
+
+Salida de modelo: `HEX: 0x00052483`
+Salida de `objdump`: `00052483`
+
+Salida de modelo: `HEX: 0x7ff62593`
+Salida de `objdump`: `7ff62583`
+
+Salida de modelo: `HEX: 0x80072693`
+Salida de `objdump`: `80072683`
+
 ## lb
 
 ```
@@ -126,6 +196,15 @@ lb x5, 4(x6)
 lb x7, -4(x8)
 lb x9, 0(x10)
 ```
+
+Salida de modelo: `HEX: 0x00430293 `
+Salida de `objdump`: `00430283 `
+
+Salida de modelo: `HEX: 0xffc40393`
+Salida de `objdump`: `ffc40383`
+
+Salida de modelo: `HEX: 0x00050493`
+Salida de `objdump`: `00050483`
 
 ## sw
 
@@ -136,6 +215,18 @@ sw x9, 0(x10)
 sw x11, 2047(x12)
 ```
 
+Salida de modelo: `HEX: 0x018a8623`
+Salida de `objdump`: `00532623`
+
+Salida de modelo: `HEX: 0xfa0eba23`
+Salida de `objdump`: `fe742a23`
+
+Salida de modelo: `HEX: 0x02928023`
+Salida de `objdump`: `00952023`
+
+Salida de modelo: `HEX: 0x7b16bfa3`
+Salida de `objdump`: `00952023`
+
 ## sb
 
 ```
@@ -144,15 +235,31 @@ sb x7, -3(x8)
 sb x9, 0(x10)
 ```
 
+Salida de modelo: `HEX: 0x018a01a3`
+Salida de `objdump`: `00952023`
+
+Salida de modelo: `HEX: 0xfa0e3ea3`
+Salida de `objdump`: `00952023`
+
+Salida de modelo: `HEX: 0x02920023`
+Salida de `objdump`: `00952023`
+
 ## beq
 
 ```
-beq x5, x6, 8
-beq x7, x8, -8
 beq x0, x0, 0
 beq x9, x10, 4094
 beq x11, x12, -4096
 ```
+
+Salida de modelo: `HEX: 0x00000063`
+Salida de `objdump`: `unrecognized opcode`
+
+Salida de modelo: `HEX: 0x7ea48fe3`
+Salida de `objdump`: `unrecognized opcode`
+
+Salida de modelo: `HEX: 0x00c58063`
+Salida de `objdump`: `unrecognized opcode`
 
 ## bne
 
@@ -161,3 +268,12 @@ bne x5, x6, 8
 bne x7, x8, -8
 bne x0, x0, 0
 ```
+
+Salida de modelo: `HEX: 0x00629463`
+Salida de `objdump`: `unrecognized opcode`
+
+Salida de modelo: `HEX: 0x7e839ce3`
+Salida de `objdump`: `unrecognized opcode`
+
+Salida de modelo: `HEX: 0x00001063`
+Salida de `objdump`: `unrecognized opcode`
