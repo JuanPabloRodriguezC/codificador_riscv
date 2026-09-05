@@ -17,4 +17,4 @@ if [ "$#" -ne 1 ]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec python3 "$SCRIPT_DIR/encoder_skeleton.py" "$1"
+exec python3 "$SCRIPT_DIR/encoder.py" "$1"
